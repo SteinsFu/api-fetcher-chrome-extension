@@ -189,6 +189,18 @@ If you have a suggestion that would make this better, please fork the repo and c
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+Since `libs` folder has too many files (especially Bootstrap icons), I suggest developers to do the followings for faster git commit:
+```sh
+cd libs/bootstrap-icons-1.8.0 
+git update-index --assume-unchanged $(git ls-files | tr '\n' ' ')
+
+cd ../bootstrap-5.1.3-dist
+git update-index --assume-unchanged $(git ls-files | tr '\n' ' ')
+
+cd ..
+git update-index --assume-unchanged jquery-3.6.0.min.js 
+```
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 

@@ -23,5 +23,3 @@ creds.js
 # Mac/OSX
 .DS_Store
 
-# 3rd-party libs
-libs/*
