@@ -1,0 +1,16 @@
+{
+  "name": "API Fetcher",
+  "description": "Fetch APIs in popup",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "html/popup.html"
+  },
+  "options_ui": {
+    "page": "html/options.html",
+    "open_in_tab": false
+  }
+}
