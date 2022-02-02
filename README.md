@@ -114,9 +114,9 @@ This is a Chrome extension for users to customize widgets to fetch APIs and show
 ### Examples
 - api url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
   ```html
-  <p>Timezone: <v val=timezone></v></p>
-  <p>Temperature: <v val=current.temp></v> C</p>
-  <p>Weather: <v val=current.weather[0].description></v> </p>
+  <p>Timezone: {timezone}</p>
+  <p>Temperature: {current.temp} C</p>
+  <p>Weather: {current.weather[0].description} </p>
   ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>

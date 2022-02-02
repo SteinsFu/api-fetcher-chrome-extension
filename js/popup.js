@@ -66,18 +66,18 @@ $(function() {
       if (url && url.replaceAll(' ', '')) {
         fetchAPI(url, options)
         .then(res => {
-          $(cardBodyElem).find("v").each(function () {
-            const vstr = $(this).attr('val')
-            console.log(vstr)
-            $(this).text(accessObj(res, vstr))
+          const newHtml = html.replace(/{(.+?)}/g, (s, vstr) => {
+            return accessObj(res, vstr)
           })
+          cardBodyElem.empty()
+          cardBodyElem.append(newHtml)
         })
       }
     }
-    $(`#${id}-refresh`).prop("onclick", null).off("click")
-    $(document).on('click', `#${id}-refresh `, fn)
-    $(document).on('click', `#${id}-remove`, () => removeCard(id))
-    $(document).on('click', `#${id}-edit`, () => editCard(id))
+    $(`#${id}-refresh`).off("click")
+    $(`#${id}-refresh`).on('click', fn)
+    $(`#${id}-remove`).on('click', () => removeCard(id))
+    $(`#${id}-edit`).on('click', () => editCard(id))
     fn()
   }
 
