@@ -1,13 +1,4 @@
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -37,8 +28,6 @@
   <p align="center">
     A Chrome extension to fetch APIs in popup widget
     <br />
-    <a href="https://github.com/SteinsFu/api-fetcher-chrome-extension">View Demo</a>
-    ·
     <a href="https://github.com/SteinsFu/api-fetcher-chrome-extension/issues">Report Bug</a>
     ·
     <a href="https://github.com/SteinsFu/api-fetcher-chrome-extension/issues">Request Feature</a>
@@ -86,8 +75,9 @@ This is a Chrome extension for users to customize widgets to fetch APIs and show
 
 ### 3rd-Party Libraries
 
+Download Links:
 * [JQuery 3.6.0](https://code.jquery.com/jquery-3.6.0.min.js)
-* [Bootstrap 5.1.3](https://getbootstrap.com/docs/5.1/getting-started/download/)
+* [Bootstrap 5.1.3](https://github.com/twbs/bootstrap/releases/download/v5.1.3/bootstrap-5.1.3-dist.zip)
 * [Bootstrap Icons 1.8.0](https://github.com/twbs/icons/releases/tag/v1.8.0)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
