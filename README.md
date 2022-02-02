@@ -144,6 +144,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 ## Roadmap
 - [x] Allow accessing fetched object using `{obj-path}` in HTML
 - [x] Add advanced options for fetching URLs
+- [ ] Add Extension Icon
 - [ ] Allow injecting "Referer" to request headers
 - [ ] Add template URLs and HTMLs
 
