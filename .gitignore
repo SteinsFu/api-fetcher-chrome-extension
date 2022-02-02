@@ -24,4 +24,4 @@ creds.js
 .DS_Store
 
 # 3rd-party libs
-# libs/*
+libs/*
