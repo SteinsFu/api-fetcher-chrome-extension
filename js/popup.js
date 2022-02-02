@@ -57,6 +57,12 @@ $(function() {
     <div class="card-header">
       <div class="float-end">
         ${editBtn}
+        <button id="${id}-up" type="button" class="btn btn-light btn-sm">
+          <i class="bi bi-caret-up-fill"></i>
+        </button>
+        <button id="${id}-down" type="button" class="btn btn-light btn-sm">
+          <i class="bi bi-caret-down-fill"></i>
+        </button>
         <button id="${id}-refresh" type="button" class="btn btn-light btn-sm">
           <i class="bi bi-arrow-clockwise"></i>
         </button>
@@ -86,6 +92,8 @@ $(function() {
     $(`#${id}-refresh`).on('click', fn)
     $(`#${id}-remove`).on('click', () => removeCard(id))
     $(`#${id}-edit`).on('click', () => editCard(id))
+    $(`#${id}-up`).on('click', () => moveCard(id, true))
+    $(`#${id}-down`).on('click', () => moveCard(id, false))
     fn()
   }
 
@@ -106,8 +114,24 @@ $(function() {
   }
 
   function removeCard(id) {
+    var nextIds = []
+    var nextCard = $(`#${id}`).next()
+    while (nextCard.length == 1) {
+      nextIds.push(nextCard.attr('id'))
+      nextCard = nextCard.next()
+    }
+    
+    console.log(nextIds)
+    if (nextIds) {
+      chrome.storage.sync.get('card_info', (data) => {
+        data = data['card_info']
+        delete data[id]
+        for (const nextId of nextIds)
+          data[nextId].order -= 1
+        chrome.storage.sync.set({'card_info': data}, () => {})
+      })
+    }
     $(`#${id}`).remove()
-    removeStorage('card_info', id)
   }
 
   function editCard(id) {
@@ -126,6 +150,28 @@ $(function() {
       $('#in-html').val(data.html)
       setEditBtns(true)
     })
+  }
+
+  function moveCard(id, up=true) {
+    var src = $(`#${id}`)
+    var dst, dstId
+    if (up) {
+      dst = src.prev()
+      if (dst.length == 1) dst.insertAfter(src)
+    } else {
+      dst = src.next()
+      if (dst.length == 1) src.insertAfter(dst)
+    }
+    if (dst.length == 1) {
+      dstId = dst.attr('id')
+      chrome.storage.sync.get('card_info', (data) => {
+        data = data['card_info']
+        const tmp = data[id].order
+        data[id].order = data[dstId].order
+        data[dstId].order = tmp
+        chrome.storage.sync.set({'card_info': data}, () => {})
+      })
+    }
   }
 
   function setEditBtns(show=true) {
@@ -156,7 +202,7 @@ $(function() {
     }
   }
 
-
+  // EVENTS
   $('#btn-main-page').on('click', () => {
     chrome.tabs.create({url: chrome.runtime.getURL("html/main.html")})
   })
@@ -169,7 +215,8 @@ $(function() {
     var data = {
       'url': '', 
       'html': '<p>empty</p>', 
-      'options': {}
+      'options': {},
+      'order': $('#card-container').children().length,
     }
     $(this).serializeArray().forEach(x => {
       if (x.value) {
@@ -199,9 +246,11 @@ $(function() {
   chrome.storage.sync.get('card_info', (data) => {
     console.log("loading cards...")
     data = data['card_info']
-    for (const id in data) {
-      console.log(data[id])
-      loadCard(id, data[id])
+    var arr = Object.entries(data)
+    arr.sort((a, b) => a[1].order - b[1].order)
+    console.log(arr)
+    for (const [id, v] of arr) {
+      loadCard(id, v)
     }
   })
 })

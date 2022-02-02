@@ -161,7 +161,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - [x] Allow accessing fetched object using `{obj-path}` in HTML
 - [x] Add advanced options for fetching URLs
 - [x] Add Extension Icon
-- [ ] Allow Ordering
+- [x] Allow Ordering
 - [ ] Allow injecting "Referer" to request headers
 - [ ] Add template URLs and HTMLs
 
