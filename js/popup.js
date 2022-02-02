@@ -1,4 +1,12 @@
 $(function() {
+  const SPINNER = `
+  <div class="d-flex justify-content-center m-3">
+    <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  `
+
   async function fetchAPI(url, options={}) {
     try {
       const res = await fetch(url, options)
@@ -33,7 +41,7 @@ $(function() {
   function loadCard(id, data, cardElem=null) {
     let {url, html, options} = data
     if (!cardElem)
-      cardElem = $(`<div id="${id}" class="card mt-1"></div>`).appendTo('#card-container')
+      cardElem = $(`<div id="${id}" class="card mb-2"></div>`).appendTo('#card-container')
     else
       cardElem.empty()
 
@@ -58,8 +66,8 @@ $(function() {
       </div>
     </div>
     `)
-    var cardBodyElem = $('<div class="card-body"></div>').appendTo(cardElem)
-    cardBodyElem.append(html)
+    var cardBodyElem = $('<div class="card-body overflow-auto"></div>').appendTo(cardElem)
+    cardBodyElem.append(SPINNER)
 
     function fn() {
       if (url && url.replaceAll(' ', '')) {
@@ -68,9 +76,10 @@ $(function() {
           const newHtml = html.replace(/{(.+?)}/g, (s, vstr) => {
             return accessObj(res, vstr)
           })
-          cardBodyElem.empty()
-          cardBodyElem.append(newHtml)
+          cardBodyElem.empty().append(newHtml)
         })
+      } else {  // url is empty
+        cardBodyElem.empty().append(html)
       }
     }
     $(`#${id}-refresh`).off("click")
@@ -112,7 +121,7 @@ $(function() {
       $('#in-api-cred').val(data.options.credentials)
       $('#in-api-redir').val(data.options.redirect)
       $('#in-api-refpol').val(data.options.referrerPolicy)
-      $('#in-api-headers').val(JSON.stringify(data.options.headers))
+      $('#in-api-headers').val(JSON.stringify(data.options.headers, null, '  '))
       $('#in-api-body').val(data.options.body)
       $('#in-html').val(data.html)
       setEditBtns(true)

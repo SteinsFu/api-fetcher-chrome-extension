@@ -111,13 +111,30 @@ This is a Chrome extension for users to customize widgets to fetch APIs and show
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+
+### Bootstrap 5 CSS & icons
+We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css.
+- Bootstrap doc: https://getbootstrap.com/docs/5.1/getting-started/introduction/
+- Bootstrap icons: https://icons.getbootstrap.com/
 ### Examples
-- api url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
+- url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
+- html:
   ```html
   <p>Timezone: {timezone}</p>
   <p>Temperature: {current.temp} C</p>
   <p>Weather: {current.weather[0].description} </p>
   ```
+<div align="center"><img src="demo/images/weather.png"></div>
+</br>
+
+- url: https://www.pixiv.net/ranking.php?format=json&content=illust
+- html:
+  ```html
+  <img width="400" src="https://pximg.rainchan.win/img?img_id={contents[0].illust_id}">
+  ```
+<div align="center"><img src="demo/images/image.png"></div>
+</br>
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -125,14 +142,10 @@ This is a Chrome extension for users to customize widgets to fetch APIs and show
 
 <!-- ROADMAP -->
 ## Roadmap
-
-<!-- - [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish -->
+- [x] Allow accessing fetched object using `{obj-path}` in HTML
+- [x] Add advanced options for fetching URLs
+- [ ] Allow injecting "Referer" to request headers
+- [ ] Add template URLs and HTMLs
 
 See the [open issues](https://github.com/SteinsFu/api-fetcher-chrome-extension/issues) for a full list of proposed features (and known issues).
 
