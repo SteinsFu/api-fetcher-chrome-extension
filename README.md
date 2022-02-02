@@ -113,6 +113,18 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 ### Examples
 1. Weather API
    - url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
+   - response:
+     ```json
+     {
+       "timezone": ...,
+       "current": {
+         "temp": ...,
+         "weather": [
+           {"description": ...}
+         ]
+       }
+     }
+     ```
    - html:
      ```html
      <p>Timezone: {timezone}</p>
@@ -144,6 +156,15 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
 3. Pixiv Illustration API
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
+   - response:
+     ```json
+     {
+       "contents": [
+         {"illust_id": ...},
+         ...
+       ]
+     }
+     ```
    - html:
      ```html
      <img width="400" src="https://pximg.rainchan.win/img?img_id={contents[0].illust_id}">
