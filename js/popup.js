@@ -1,7 +1,6 @@
 $(function() {
   async function fetchAPI(url, options={}) {
     try {
-      console.log(options)
       const res = await fetch(url, options)
       return await res.json()
     } catch (error) {
@@ -116,9 +115,20 @@ $(function() {
       $('#in-api-headers').val(JSON.stringify(data.options.headers))
       $('#in-api-body').val(data.options.body)
       $('#in-html').val(data.html)
-      $('#btn-edit').show()
-      $('#btn-add').hide()
+      setEditBtns(true)
     })
+  }
+
+  function setEditBtns(show=true) {
+    if (show) {
+      $('#btn-edit').show()
+      $('#btn-cancel-edit').show()
+      $('#btn-add').hide()
+    } else {
+      $('#btn-edit').hide()
+      $('#btn-cancel-edit').hide()
+      $('#btn-add').show()
+    }
   }
 
   function parseJSON(str) {
@@ -138,8 +148,12 @@ $(function() {
   }
 
 
-  $(document).on('click', '#btn-main-page', () => {
+  $('#btn-main-page').on('click', () => {
     chrome.tabs.create({url: chrome.runtime.getURL("html/main.html")})
+  })
+  $('#btn-cancel-edit').on('click', () => {
+    $('#create-card-form')[0].reset()
+    setEditBtns(false)
   })
   $('#create-card-form').on('submit', function(event) {
     event.preventDefault()
@@ -166,8 +180,7 @@ $(function() {
     const id = $('#edit-card-id').val()
     if (id) {
       updateCard(id, data)
-      $('#btn-edit').hide()
-      $('#btn-add').show()
+      setEditBtns(false)
     } else {
       addCard(data)
     }
