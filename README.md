@@ -19,10 +19,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <!-- <a href="https://github.com/SteinsFu/api-fetcher-chrome-extension">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a> -->
-
   <h3 align="center">API Fetcher Chrome Extension</h3>
 
   <p align="center">
@@ -69,6 +65,8 @@
 
 This is a Chrome extension for users to customize widgets to fetch APIs and show the results in a customized way in the extension popup window.
 
+<div align="center"><img src="demo/images/popup.png" height="500"></div>
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -106,6 +104,12 @@ Download Links:
 We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css.
 - Bootstrap doc: https://getbootstrap.com/docs/5.1/getting-started/introduction/
 - Bootstrap icons: https://icons.getbootstrap.com/
+
+### How to add an API Card
+1. Click the extension icon, and then click the _blue_ edit button on the popup.
+2. Input the API url and input your prefered HTML code for displaying the results of the API fetch.
+3. Click the _blue_ + button.
+
 ### Examples
 1. Weather API
    - url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
@@ -157,6 +161,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - [x] Allow accessing fetched object using `{obj-path}` in HTML
 - [x] Add advanced options for fetching URLs
 - [x] Add Extension Icon
+- [ ] Allow Ordering
 - [ ] Allow injecting "Referer" to request headers
 - [ ] Add template URLs and HTMLs
 
