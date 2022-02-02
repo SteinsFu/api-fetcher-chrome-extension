@@ -100,15 +100,13 @@ $(function() {
   function addCard(data) {
     const id = `id-${Date.now()}`
     data.html = data.html.replace(/id="(.+)"/g, `id="${id}-$1"`) // id="abc" -> id="id-123123-abc"
+    data.order = $('#card-container').children().length
     updateStorage('card_info', {[id]: data})
     loadCard(id, data)
   }
 
   function updateCard(id, data) {
-    if (!data.html || !data.html.replaceAll(' ', '')) {
-      alert("html field is empty")
-      return
-    }
+    data.order = $(`#${id}`).index()
     updateStorage('card_info', {[id]: data})
     loadCard(id, data, $(`#${id}`))
   }
@@ -179,10 +177,18 @@ $(function() {
       $('#btn-edit').show()
       $('#btn-cancel-edit').show()
       $('#btn-add').hide()
+      $('button[id$="-up"]').hide()
+      $('button[id$="-down"]').hide()
+      $('button[id$="-refresh"]').hide()
+      $('button[id$="-remove"]').hide()
     } else {
       $('#btn-edit').hide()
       $('#btn-cancel-edit').hide()
       $('#btn-add').show()
+      $('button[id$="-up"]').show()
+      $('button[id$="-down"]').show()
+      $('button[id$="-refresh"]').show()
+      $('button[id$="-remove"]').show()
     }
   }
 
@@ -216,7 +222,6 @@ $(function() {
       'url': '', 
       'html': '<p>empty</p>', 
       'options': {},
-      'order': $('#card-container').children().length,
     }
     $(this).serializeArray().forEach(x => {
       if (x.value) {
@@ -249,8 +254,12 @@ $(function() {
     var arr = Object.entries(data)
     arr.sort((a, b) => a[1].order - b[1].order)
     console.log(arr)
-    for (const [id, v] of arr) {
-      loadCard(id, v)
+    for (let i = 0; i < arr.length; i++) {
+      const [id, d] = arr[i]
+      loadCard(id, d)
+      data[id].order = i
     }
+    // make sure order are contiguous for all data
+    chrome.storage.sync.set({'card_info': data}, () => {})
   })
 })

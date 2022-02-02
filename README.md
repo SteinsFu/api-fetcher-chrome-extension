@@ -148,7 +148,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      ```html
      <img width="400" src="https://pximg.rainchan.win/img?img_id={contents[0].illust_id}">
      ```
-   <div align="center"><img src="demo/images/image.png"></div>
+   <div align="center"><img src="demo/images/pixiv_img.png"></div>
    </br>
 
 
