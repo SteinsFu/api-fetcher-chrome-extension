@@ -119,11 +119,12 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
 ### How to add an API Card
 1. Click the extension icon
-2. Click the edit button on the top-left corner of the popup.
+2. Click the edit button on the top-left corner of the popup to go to the **main edit page**.
 3. Input the API url and input your prefered HTML code for displaying the results of the API fetch.
 4. Click the _blue_ + button.
 
 <div align="center"><img width="1000" src="demo/images/main_page.png"></div>
+<p align="center">main edit page</p>
 </br>
 
 ### Statement Evaluation
@@ -142,7 +143,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   ```
   - You can write your html code and access the `title` like this:
   ```html
-  <p> Title: {contents[0].info.title} </p>
+  <p> Title: {$data.contents[0].info.title} </p>
   ```
 
 #### Evaluation Limitations
@@ -151,7 +152,6 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
   | Function    | Return      |
   | ----------- | ----------- |
-  | `add(a, b, c, ...)` | a + b + c + ... |
   | `add(a, b, c, ...)` | a + b + c + ... |
   | `sub(a, b)` | a - b |
   | `mul(a, b, c, ...)` | a * b * c * ... |
@@ -162,7 +162,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   | `or(a, b, c, ...)` | a || b || c || ... |
   | `randomInt(max)` | random integer in range [0, max) |
 
-- For Developers/Contributers: If you want to add more functions, please add into `popup.js` `FNS` constant (please follow [Contributing](#contributing) steps):
+- For Developers/Contributers: If you want to add more functions, please add into `popup.js` `FNS` constant (please follow the [Contributing](#contributing) steps):
   ```javascript
   const FNS = {
     "add": (...args) => args.reduce((acc, cur) => Number(acc) + Number(cur), 0),
