@@ -154,7 +154,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    <div align="center"><img src="demo/images/weather_with_icons.png"></div>
    </br>
 
-3. Pixiv Illustration API
+3. Pixiv Illustration API #1
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
    - response:
      ```json
@@ -171,6 +171,29 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      ```
    <div align="center"><img src="demo/images/pixiv_img.png"></div>
    </br>
+
+4. Pixv Illustraion API #2
+   - url: https://www.pixiv.net/ranking.php?format=json&content=illust
+   - html:
+   ```html
+   <div class="row">
+     <div class="col-4 mb-4 mb-lg-0">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[0].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[1].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[2].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+     </div>
+     <div class="col-4 mb-4 mb-lg-0">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[3].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[4].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[5].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+     </div>
+     <div class="col-4 mb-4 mb-lg-0">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[6].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[7].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={contents[8].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+     </div>
+   </div>
+   ```
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>

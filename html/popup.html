@@ -10,15 +10,21 @@
     <script src="../js/popup.js" defer></script>
   </head>
   <body>
-    <p>API Fetcher</p>
+    <nav class="navbar navbar-dark bg-dark p-1">
+      <div class="container-fluid">
+        <a class="navbar-brand user-select-none">
+          <img src="../images/icon32.png" height="24" class="d-inline-block align-text-middle">
+          API Fetcher
+        </a>
+        <div class="d-flex">
+          <button id="btn-main-page" type="button" class="btn btn-sm btn-outline-light">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
 
-    <div class="py-1">
-      <button id="btn-main-page" type="button" class="btn btn-primary">
-        <i class="bi bi-pencil-square"></i>
-      </button>
-    </div>
-
-    <div id="card-container" class="pb-1">
+    <div id="card-container" class="p-2">
       <!-- Cards will be generated to here -->
     </div>
 
