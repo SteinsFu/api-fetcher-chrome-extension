@@ -39,7 +39,7 @@ $(function() {
   }
 
   function loadCard(id, data, cardElem=null) {
-    let {url, html, options} = data
+    let {name, url, html, options} = data
     if (!cardElem)
       cardElem = $(`<div id="${id}" class="card mb-2"></div>`).appendTo('#card-container')
     else
@@ -55,20 +55,23 @@ $(function() {
     }
     cardElem.append(`
     <div class="card-header">
-      <div class="float-end">
-        ${editBtn}
-        <button id="${id}-up" type="button" class="btn btn-light btn-sm">
-          <i class="bi bi-caret-up-fill"></i>
-        </button>
-        <button id="${id}-down" type="button" class="btn btn-light btn-sm">
-          <i class="bi bi-caret-down-fill"></i>
-        </button>
-        <button id="${id}-refresh" type="button" class="btn btn-light btn-sm">
-          <i class="bi bi-arrow-clockwise"></i>
-        </button>
-        <button id="${id}-remove" type="button" class="btn btn-outline-danger btn-sm">
-          <i class="bi bi-x-lg"></i>
-        </button>
+      <div class="d-flex align-items-center">
+        <div id="${id}-name" class="me-auto">${name || ''}</div>
+        <div>
+          ${editBtn}
+          <button id="${id}-up" type="button" class="btn btn-light btn-sm">
+            <i class="bi bi-caret-up-fill"></i>
+          </button>
+          <button id="${id}-down" type="button" class="btn btn-light btn-sm">
+            <i class="bi bi-caret-down-fill"></i>
+          </button>
+          <button id="${id}-refresh" type="button" class="btn btn-light btn-sm">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+          <button id="${id}-remove" type="button" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
       </div>
     </div>
     `)
@@ -136,6 +139,7 @@ $(function() {
     chrome.storage.sync.get('card_info', (data) => {
       data = data['card_info'][id]
       $('#edit-card-id').val(id)
+      $('#in-name').val(data.name)
       $('#in-api-url').val(data.url)
       $('#in-api-method').val(data.options.method)
       $('#in-api-mode').val(data.options.mode)
@@ -255,13 +259,14 @@ $(function() {
       'options': {},
     }
     $(this).serializeArray().forEach(x => {
+      const cardInfoKeys = ['name', 'url', 'html']
       if (x.value) {
-        if (['url', 'html'].includes(x.name)) 
+        if (cardInfoKeys.includes(x.name)) 
           data[x.name] = x.value
         else
           data.options[x.name] = x.value
       } else {
-        if (!['url', 'html'].includes(x.name)) 
+        if (!cardInfoKeys.includes(x.name)) 
           delete data.options[x.name]
       }
     })

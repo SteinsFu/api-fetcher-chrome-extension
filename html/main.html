@@ -31,12 +31,20 @@
       <div class="row mb-5">
         <div class="col-sm">
           <form id="create-card-form">
+            <!-- Basic inputs -->
+            <div class="row mb-3">
+              <label for="in-name" class="col-sm-2 col-form-label">Name:</label>
+              <div class="col-sm-10">
+                <input id="in-name" name="name" class="form-control">
+              </div>
+            </div>
             <div class="row mb-3">
               <label for="in-api-url" class="col-sm-2 col-form-label">API URL:</label>
               <div class="col-sm-10">
                 <input id="in-api-url" name="url" class="form-control" placeholder="www.example.com/api">
               </div>
             </div>
+            <!-- Advanced Panel toggle button -->
             <div class="mb-3 clearfix">
               <button id="api-advanced-btn" type="button" class="btn btn-light btn-sm float-end" 
                 data-bs-toggle="collapse" data-bs-target="#api-advanced-panel" 
@@ -44,7 +52,7 @@
                 <span class="me-1">Advanced</span><i class="bi bi-caret-down-fill"></i>
               </button>
             </div>
-
+            <!-- Advanced Panel -->
             <div id="api-advanced-panel" class="collapse">
               <div class="card card-body">
                 <div class="row mb-3">
@@ -129,7 +137,7 @@
                 </div>
               </div>
             </div>
-
+            <!-- HTML -->
             <div class="mb-3">
               <label for="in-html" class="form-label">HTML:</label>
               <textarea id="in-html" name="html" class="form-control" rows="15"></textarea>
@@ -137,7 +145,7 @@
             <div class="mb-3">
               <input id="edit-card-id" class="form-control" disabled>
             </div>
-            
+            <!-- Buttons -->
             <button id="btn-add" type="submit" class="btn btn-primary">
               <i class="bi bi-plus-lg"></i>
             </button>

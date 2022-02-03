@@ -110,6 +110,21 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 2. Input the API url and input your prefered HTML code for displaying the results of the API fetch.
 3. Click the _blue_ + button.
 
+### Use {}
+- You can use `{}` to access the response data in the html code.
+- e.g.
+  - response:
+  ```json
+  {
+    "contents": [
+      {
+        "info": {"title": "Hello World"}
+      }
+    ]
+  }
+  ```
+  - You can access the `title` by `{contents[0].info.title}`
+
 ### Examples
 1. Weather API
    - url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
@@ -121,8 +136,10 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
          "temp": ...,
          "weather": [
            {"description": ...}
-         ]
-       }
+         ],
+         ...
+       },
+       ...
      }
      ```
    - html:
@@ -193,6 +210,36 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
        <img src="https://pximg.rainchan.win/img?img_id={contents[8].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
      </div>
    </div>
+   ```
+   <div align="center"><img src="demo/images/pixiv_gallery.png"></div>
+   </br>
+
+5. News API
+   - url: https://saurav.tech/NewsAPI/top-headlines/category/technology/us.json
+   - html:
+   ```html
+   <p>{articles[0].title}</p>
+   <a href="{articles[0].url}" class="d-flex justify-content-center">
+     <img src="{articles[0].urlToImage}" class="rounded" height="150">
+   </a>
+   ```
+   <div align="center"><img src="demo/images/news.png"></div>
+   </br>
+
+6. Noembed.com Youtube Video
+   - url: https://noembed.com/embed?url=https://www.youtube.com/watch?v=3wmqu4LzuoU
+   - response:
+   ```json
+   {
+     "author_name": ...,
+     "author_url": ...,
+     "html": "<iframe ...></iframe>",
+     ...
+   }
+   ```
+   - html:
+   ```html
+   {html}
    ```
 
 
