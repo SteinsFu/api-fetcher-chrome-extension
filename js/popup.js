@@ -22,19 +22,19 @@ $(function() {
     return vstr.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => o[i], obj)
   }
 
-  function updateStorage(storageKey, obj) {
+  function updateStorage(storageKey, obj, cb=()=>{}) {
     chrome.storage.sync.get(storageKey, (data) => {
       data = data[storageKey]
       const newData = Object.assign(data || {}, obj)
-      chrome.storage.sync.set({[storageKey]: newData}, () => {})
+      chrome.storage.sync.set({[storageKey]: newData}, cb)
     })
   }
 
-  function removeStorage(storageKey, key) {
+  function removeStorage(storageKey, key, cb=()=>{}) {
     chrome.storage.sync.get(storageKey, (data) => {
       data = data[storageKey]
       delete data[key]
-      chrome.storage.sync.set({[storageKey]: data}, () => {})
+      chrome.storage.sync.set({[storageKey]: data}, cb)
     })
   }
 
@@ -208,7 +208,38 @@ $(function() {
     }
   }
 
+  function exportCards() {
+    chrome.storage.sync.get('card_info', (data) => {
+      const str = JSON.stringify(data['card_info'], null, '  ')
+      const vLink = document.createElement('a')
+      const vBlob = new Blob([str], {type: "octet/stream"})
+      const vName = 'card_info.json'
+      const vUrl = window.URL.createObjectURL(vBlob)
+      vLink.setAttribute('href', vUrl)
+      vLink.setAttribute('download', vName)
+      vLink.click();
+    })
+  }
+
+  function importCards() {
+    // create file reader
+    const reader = new FileReader()
+    reader.onload = function(e){
+      const cardInfoData = JSON.parse(e.target.result)
+      updateStorage('card_info', cardInfoData, init)
+    }
+    // create file input & click
+    const fileElem = $('<input type="file">')
+    fileElem.on('change', function() {
+      const file = $(this).prop('files')[0]
+      reader.readAsText(file)
+    })
+    fileElem.click()
+  }
+
   // EVENTS
+  $('#btn-export').on('click', exportCards)
+  $('#btn-import').on('click', importCards)
   $('#btn-main-page').on('click', () => {
     chrome.tabs.create({url: chrome.runtime.getURL("html/main.html")})
   })
@@ -248,18 +279,22 @@ $(function() {
     $(this)[0].reset()
   })
 
-  chrome.storage.sync.get('card_info', (data) => {
-    console.log("loading cards...")
-    data = data['card_info']
-    var arr = Object.entries(data)
-    arr.sort((a, b) => a[1].order - b[1].order)
-    console.log(arr)
-    for (let i = 0; i < arr.length; i++) {
-      const [id, d] = arr[i]
-      loadCard(id, d)
-      data[id].order = i
-    }
-    // make sure order are contiguous for all data
-    chrome.storage.sync.set({'card_info': data}, () => {})
-  })
+  function init() {
+    $('#card-container').empty()
+    chrome.storage.sync.get('card_info', (data) => {
+      console.log("loading cards...")
+      data = data['card_info']
+      var arr = Object.entries(data)
+      arr.sort((a, b) => a[1].order - b[1].order)
+      console.log(arr)
+      for (let i = 0; i < arr.length; i++) {
+        const [id, d] = arr[i]
+        loadCard(id, d)
+        data[id].order = i
+      }
+      // make sure order are contiguous for all data
+      chrome.storage.sync.set({'card_info': data}, () => {})
+    })
+  }
+  init()
 })

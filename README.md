@@ -183,6 +183,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - [x] Add advanced options for fetching URLs
 - [x] Add Extension Icon
 - [x] Allow Ordering
+- [x] Add Export & Import cards function
 - [ ] Allow simple JS injection without using eval
 - [ ] Allow injecting "Referer" to request headers
 - [ ] Add template URLs and HTMLs
