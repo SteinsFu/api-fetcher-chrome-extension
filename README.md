@@ -107,7 +107,6 @@ Download Links:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-[a](#use--and-data)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
