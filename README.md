@@ -106,9 +106,10 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - Bootstrap icons: https://icons.getbootstrap.com/
 
 ### How to add an API Card
-1. Click the extension icon, and then click the _blue_ edit button on the popup.
-2. Input the API url and input your prefered HTML code for displaying the results of the API fetch.
-3. Click the _blue_ + button.
+1. Click the extension icon
+2. Click the edit button on the top-left corner of the popup.
+3. Input the API url and input your prefered HTML code for displaying the results of the API fetch.
+4. Click the _blue_ + button.
 
 ### Use {}
 - You can use `{}` to access the response data in the html code.
@@ -216,12 +217,31 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
 5. News API
    - url: https://saurav.tech/NewsAPI/top-headlines/category/technology/us.json
+   - response:
+   ```json
+   {
+     "articles": [
+       {
+         "author": ...,
+         "title": ...,
+         "url": ...,
+         "urlToImage": ...,
+         ...
+       },
+       ...
+     ]
+   }
+   ```
    - html:
    ```html
-   <p>{articles[0].title}</p>
-   <a href="{articles[0].url}" class="d-flex justify-content-center">
-     <img src="{articles[0].urlToImage}" class="rounded" height="150">
-   </a>
+   <div class="d-flex">
+     <a href="{articles[0].url}" class="d-flex justify-content-center">
+       <img src="{articles[0].urlToImage}" class="rounded" height="100">
+     </a>
+     <div class="flex-grow-1 ms-3">
+       <p class="h6">{articles[0].title}</p>
+     </div>
+   </div>
    ```
    <div align="center"><img src="demo/images/news.png"></div>
    </br>
@@ -241,6 +261,8 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```html
    {html}
    ```
+   <div align="center"><img src="demo/images/youtube.png"></div>
+   </br>
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>

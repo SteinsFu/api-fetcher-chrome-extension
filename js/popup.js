@@ -48,7 +48,7 @@ $(function() {
     var editBtn = ''
     if (window.location.toString().startsWith(chrome.runtime.getURL("html/main.html"))) {
       editBtn = `
-      <button id="${id}-edit" type="button" class="btn btn-light">
+      <button id="${id}-edit" type="button" class="btn btn-sm btn-light">
         <i class="bi bi-pencil-square"></i>
       </button>
       `
