@@ -16,6 +16,8 @@ $(function() {
     "and": (...args) => args.reduce((acc, cur) => Boolean(acc) && Boolean(cur), true),
     "or": (...args) => args.reduce((acc, cur) => Boolean(acc) || Boolean(cur), false),
     "randomInt": (max) => Math.floor(Math.random() * parseInt(max)),
+    "JSONstringify": (...args) => JSON.stringify(...args),
+    "JSONparse": (...args) => JSON.parse(...args),
   }
 
   async function fetchAPI(url, options={}) {
@@ -35,8 +37,8 @@ $(function() {
 
   function parseDollarData(data, vstr) {
     vstr = vstr.replace(/\$data.(.+)/g, (m, g1) => accessObj(data, g1))	// access data obj
-    vstr = vstr.replace(/\$data/g, data)	// if only $data, return data
-    return vstr
+    if (vstr == '$data') return data	// if only $data, return data
+    else return vstr
   }
 
   function parseEval(data, str) {

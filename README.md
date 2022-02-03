@@ -151,15 +151,17 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
   | Function    | Return      |
   | ----------- | ----------- |
-  | `add(a, b, c, ...)` | a + b + c + ... |
-  | `sub(a, b)` | a - b |
-  | `mul(a, b, c, ...)` | a * b * c * ... |
-  | `div(a, b)` | a / b |
-  | `mod(a, b)` | a % b |
+  | `add(a, b, c, ...)` | `a + b + c + ...` |
+  | `sub(a, b)` | `a - b` |
+  | `mul(a, b, c, ...)` | `a * b * c * ...` |
+  | `div(a, b)` | `a / b` |
+  | `mod(a, b)` | `a % b` |
   | `int(x)` | cast x to integer |
-  | `and(a, b, c, ...)` | a && b && c && ... |
-  | `or(a, b, c, ...)` | a || b || c || ... |
+  | `and(a, b, c, ...)` | `a && b && c && ...` |
+  | `or(a, b, c, ...)` | `a || b || c || ...` |
   | `randomInt(max)` | random integer in range [0, max) |
+  | `JSONstringify(value, replacer, space)` | `JSON.stringify(value, replacer, space)` |
+  | `JSONparse(text, reviver)` | `JSON.parse(text, reviver)` |
 
 - For Developers/Contributers: If you want to add more functions, please add into `popup.js` `FNS` constant (please follow the [Contributing](#contributing) steps):
   ```javascript
