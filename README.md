@@ -129,7 +129,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 ### Statement Evaluation
 - Use `{}` to evaluate the statement
 - Use `$data` to access the response data
-- Use `<var-name>=<value>;` to declare variable (card scope) (before your evalution statement)
+- Use `<var-name>=<value>;` to declare variable (card scoped) before your evalution statement
 - Use `$vars.<var-name>` to access your variable
 - e.g.
   - response:
