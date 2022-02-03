@@ -111,7 +111,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 3. Input the API url and input your prefered HTML code for displaying the results of the API fetch.
 4. Click the _blue_ + button.
 
-<div align="center"><img width="700" src="demo/images/main_page.png"></div>
+<div align="center"><img width="1000" src="demo/images/main_page.png"></div>
 </br>
 
 ### Use {}
