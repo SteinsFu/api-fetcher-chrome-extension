@@ -152,7 +152,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 #### Evaluation Limitations
 - Cannot use javascript operators such as `+` `-` `*` `/` `%` `&&` `||` etc.
 - Unless wrapped by function, value of variables will be in `string`
-  - e.g. Use `{i=int(0);$data.results[$vars.i]}` instead of `{i=0;$data.results[$vars.i]}`}
+  - e.g. Use `{s=Hello World;}` instead of `{s="Hello World";}`}
   
 - Only the following functions are allowed to use inside `{}`:
 
