@@ -148,13 +148,12 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   <p> Variable x: {$vars.x} (Expected: 5) </p>
   <p> Variable y: {$vars.y} (Expected: 7) </p>
   ```
+- Unless it is wrapped by function, value of a variable will be in `string` type by default
+  - i.e. Use `{s=Hello World;}` instead of `{s="Hello World";}`}
 
 #### Evaluation Limitations
 - Cannot use javascript operators such as `+` `-` `*` `/` `%` `&&` `||` etc.
-- Unless wrapped by function, value of variables will be in `string`
-  - e.g. Use `{s=Hello World;}` instead of `{s="Hello World";}`}
-  
-- Only the following functions are allowed to use inside `{}`:
+- Only the following functions can be used inside `{}` for now:
 
   | Function    | Return      |
   | ----------- | ----------- |
@@ -170,7 +169,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   | `JSONstringify(value, replacer, space)` | `JSON.stringify(value, replacer, space)` |
   | `JSONparse(text, reviver)` | `JSON.parse(text, reviver)` |
 
-- For Developers/Contributers: If you want to add more functions, please add into `popup.js` `FNS` constant (please follow the [Contributing](#contributing) steps):
+- For Developers/Contributers: If you want to add more functions, please add them into `popup.js` `FNS` constant variable (please follow the [Contributing](#contributing) steps):
   ```javascript
   const FNS = {
     "add": (...args) => args.reduce((acc, cur) => Number(acc) + Number(cur), 0),
