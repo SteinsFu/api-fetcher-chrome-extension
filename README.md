@@ -410,6 +410,8 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - [x] Allow Ordering
 - [x] Add Export & Import cards function
 - [x] Allow simple JS injection without using eval
+- [x] Allow declaring variables for each card
+- [ ] Multiple APIs fetching in one card
 - [ ] Extend statement evalutaion function pools to all functions in `window` object
 - [ ] Allow injecting "Referer" to request headers
 - [ ] Add template URLs and HTMLs
