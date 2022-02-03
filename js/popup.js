@@ -6,6 +6,17 @@ $(function() {
     </div>
   </div>
   `
+  const FNS = {
+    "add": (...args) => args.reduce((acc, cur) => Number(acc) + Number(cur), 0),
+    "sub": (a, b) => Number(a) - Number(b),
+    "mul": (...args) => args.reduce((acc, cur) => Number(acc) * Number(cur), 1),
+    "div": (a, b) => Number(a) / Number(b),
+    "mod": (a, b) => Number(a) % Number(b),
+    "int": (x) => parseInt(x), 
+    "and": (...args) => args.reduce((acc, cur) => Boolean(acc) && Boolean(cur), true),
+    "or": (...args) => args.reduce((acc, cur) => Boolean(acc) || Boolean(cur), false),
+    "randomInt": (max) => Math.floor(Math.random() * parseInt(max)),
+  }
 
   async function fetchAPI(url, options={}) {
     try {
@@ -20,6 +31,38 @@ $(function() {
   function accessObj(obj, vstr) {
     // vstr="temperature.data[0].place" -> value of obj.temperature.data[0].place
     return vstr.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => o[i], obj)
+  }
+
+  function parseDollarData(data, vstr) {
+    vstr = vstr.replace(/\$data.(.+)/g, (m, g1) => accessObj(data, g1))	// access data obj
+    vstr = vstr.replace(/\$data/g, data)	// if only $data, return data
+    return vstr
+  }
+
+  function parseEval(data, str) {
+    if ((str.match(/\(/g) || []).length != (str.match(/\)/g) || []).length) {
+      console.log(`${str}: Number of ( and ) does not match`)
+      return
+    }
+    // regex = /(\((?:\1??[^\(]*?\)))+/g        // (add, 1, 2)
+    regex = /([a-zA-Z_]+\((?:\1??[^\(]*?\)))+/g // add(1, 2)
+    var newStr = str.replace(regex, (matched) => {
+      const fn = matched.split(/[\(\),\s]/).filter(x => x)
+      const fnName = fn[0]
+      const fnParams = fn.slice(1)
+      // parse params if have access to $data
+      for (let i = 0; i < fnParams.length; i++) {
+        fnParams[i] = parseDollarData(data, fnParams[i])
+        console.log(`\tparam[${i}]: ${fnParams[i]}`)
+      }
+      const result = FNS[fnName](...fnParams)
+      return result
+    })
+    console.log(newStr)
+    if (newStr.includes('(')) {
+      newStr = parseEval(data, newStr)
+    }
+    return parseDollarData(data, newStr)
   }
 
   function updateStorage(storageKey, obj, cb=()=>{}) {
@@ -82,8 +125,8 @@ $(function() {
       if (url && url.replaceAll(' ', '')) {
         fetchAPI(url, options)
         .then(res => {
-          const newHtml = html.replace(/{(.+?)}/g, (s, vstr) => {
-            return accessObj(res, vstr)
+          const newHtml = html.replace(/{(.+?)}/g, (m, g1) => {
+            return parseEval(res, g1)
           })
           cardBodyElem.empty().append(newHtml)
         })

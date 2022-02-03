@@ -48,13 +48,25 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#bootstrap-5-css-and-icons">Bootstrap 5 CSS and Icons</a>
+        <li><a href="#how-to-add-an-api-card">How to add an API Card</a>
+        <li><a href="#statement-evaluation">Statement Evaluation</a>
+        <ul>
+          <li><a href="#evaluation-limitations">Evaluation Limitations</a>
+        </ul>
+        <li><a href="#examples">Examples</a>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
+
 
 
 
@@ -95,12 +107,12 @@ Download Links:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
+[a](#use--and-data)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-### Bootstrap 5 CSS & icons
+### Bootstrap 5 CSS and Icons
 We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css.
 - Bootstrap doc: https://getbootstrap.com/docs/5.1/getting-started/introduction/
 - Bootstrap icons: https://icons.getbootstrap.com/
@@ -114,8 +126,9 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 <div align="center"><img width="1000" src="demo/images/main_page.png"></div>
 </br>
 
-### Use {}
-- You can use `{}` to access the response data in the html code.
+### Statement Evaluation
+- Use `{}` to evaluate the statement
+- Use `$data` to access the response data
 - e.g.
   - response:
   ```json
@@ -127,7 +140,43 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
     ]
   }
   ```
-  - You can access the `title` by `{contents[0].info.title}`
+  - You can write your html code and access the `title` like this:
+  ```html
+  <p> Title: {contents[0].info.title} </p>
+  ```
+
+#### Evaluation Limitations
+- Cannot use javascript operators such as `+` `-` `*` `/` `%` `&&` `||` etc.
+- Only the following functions are allowed to use inside `{}`:
+
+  | Function    | Return      |
+  | ----------- | ----------- |
+  | `add(a, b, c, ...)` | a + b + c + ... |
+  | `add(a, b, c, ...)` | a + b + c + ... |
+  | `sub(a, b)` | a - b |
+  | `mul(a, b, c, ...)` | a * b * c * ... |
+  | `div(a, b)` | a / b |
+  | `mod(a, b)` | a % b |
+  | `int(x)` | cast x to integer |
+  | `and(a, b, c, ...)` | a && b && c && ... |
+  | `or(a, b, c, ...)` | a || b || c || ... |
+  | `randomInt(max)` | random integer in range [0, max) |
+
+- For Developers/Contributers: If you want to add more functions, please add into `popup.js` `FNS` constant (please follow [Contributing](#contributing) steps):
+  ```javascript
+  const FNS = {
+    "add": (...args) => args.reduce((acc, cur) => Number(acc) + Number(cur), 0),
+    "sub": (a, b) => Number(a) - Number(b),
+    "mul": (...args) => args.reduce((acc, cur) => Number(acc) * Number(cur), 1),
+    "div": (a, b) => Number(a) / Number(b),
+    "mod": (a, b) => Number(a) % Number(b),
+    "int": (x) => parseInt(x), 
+    "and": (...args) => args.reduce((acc, cur) => Boolean(acc) && Boolean(cur), true),
+    "or": (...args) => args.reduce((acc, cur) => Boolean(acc) || Boolean(cur), false),
+    "randomInt": (max) => Math.floor(Math.random() * parseInt(max)),
+    <== add here...
+  }
+  ```
 
 ### Examples
 1. Weather API
@@ -148,9 +197,9 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      ```
    - html:
      ```html
-     <p>Timezone: {timezone}</p>
-     <p>Temperature: {current.temp} C</p>
-     <p>Weather: {current.weather[0].description} </p>
+     <p>Timezone: {$data.timezone}</p>
+     <p>Temperature: {$data.current.temp} C</p>
+     <p>Weather: {$data.current.weather[0].description} </p>
      ```
   <div align="center"><img src="demo/images/weather.png"></div>
   </br>
@@ -161,19 +210,20 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      ```html
      <p>
        <i class="bi bi-map"></i>
-       Timezone: {timezone}
+       Timezone: {$data.timezone}
      </p>
      <p>
        <i class="bi bi-thermometer-half"></i>
-       Temperature: {current.temp} C
+       Temperature: {$data.current.temp} C
      </p>
      <p>
        <i class="bi bi-cloud"></i>
-       Weather: {current.weather[0].description} 
+       Weather: {$data.current.weather[0].description} 
      </p>
      ```
    <div align="center"><img src="demo/images/weather_with_icons.png"></div>
    </br>
+
 
 3. Pixiv Illustration API #1
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
@@ -186,12 +236,22 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
        ]
      }
      ```
-   - html:
+   - html (get the first result in contents):
      ```html
-     <img width="400" src="https://pximg.rainchan.win/img?img_id={contents[0].illust_id}">
+     <img 
+       width="400" 
+       src="https://pximg.rainchan.win/img?img_id={$data.contents[0].illust_id}&web=true"
+     >
      ```
+   - html (get a random result in contents):
+     ```html
+     <img 
+       width="400" 
+       src="https://pximg.rainchan.win/img?img_id={$data.contents[randomInt($data.contents.length)].illust_id}&web=true"
+     >
    <div align="center"><img src="demo/images/pixiv_img.png"></div>
    </br>
+
 
 4. Pixv Illustraion API #2
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
@@ -199,19 +259,19 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```html
    <div class="row">
      <div class="col-4 mb-4 mb-lg-0">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[0].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[1].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[2].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[0].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[1].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[2].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
      </div>
      <div class="col-4 mb-4 mb-lg-0">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[3].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[4].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[5].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[3].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[4].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[5].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
      </div>
      <div class="col-4 mb-4 mb-lg-0">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[6].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[7].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       <img src="https://pximg.rainchan.win/img?img_id={contents[8].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[6].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[7].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       <img src="https://pximg.rainchan.win/img?img_id={$data.contents[8].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
      </div>
    </div>
    ```
@@ -238,11 +298,11 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    - html:
    ```html
    <div class="d-flex">
-     <a href="{articles[0].url}" class="d-flex justify-content-center">
-       <img src="{articles[0].urlToImage}" class="rounded" height="100">
+     <a href="{$data.articles[0].url}" class="d-flex justify-content-center">
+       <img src="{$data.articles[0].urlToImage}" class="rounded" height="100">
      </a>
      <div class="flex-grow-1 ms-3">
-       <p class="h6">{articles[0].title}</p>
+       <p class="h6">{$data.articles[0].title}</p>
      </div>
    </div>
    ```
@@ -262,7 +322,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```
    - html:
    ```html
-   {html}
+   {$data.html}
    ```
    <div align="center"><img src="demo/images/youtube.png"></div>
    </br>
@@ -279,7 +339,8 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - [x] Add Extension Icon
 - [x] Allow Ordering
 - [x] Add Export & Import cards function
-- [ ] Allow simple JS injection without using eval
+- [x] Allow simple JS injection without using eval
+- [ ] Extend statement evalutaion function pools to all functions in `window` object
 - [ ] Allow injecting "Referer" to request headers
 - [ ] Add template URLs and HTMLs
 
