@@ -129,6 +129,8 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 ### Statement Evaluation
 - Use `{}` to evaluate the statement
 - Use `$data` to access the response data
+- Use `<var-name>=<value>;` to declare variable (card scope)
+- Use `$vars.<var-name>` to access your variable
 - e.g.
   - response:
   ```json
@@ -142,11 +144,16 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   ```
   - You can write your html code and access the `title` like this:
   ```html
-  <p> Title: {$data.contents[0].info.title} </p>
+  <p> Title: {x=5;y=add($vars.x, 2);i=randomInt($data.contents.length);$data.contents[$var.i].info.title} </p>
+  <p> Variable x: {$vars.x} (Expected: 5) </p>
+  <p> Variable y: {$vars.y} (Expected: 7) </p>
   ```
 
 #### Evaluation Limitations
 - Cannot use javascript operators such as `+` `-` `*` `/` `%` `&&` `||` etc.
+- Unless wrapped by function, value of variables will be in `string`
+  - e.g. Use `{i=int(0);$data.results[$vars.i]}` instead of `{i=0;$data.results[$vars.i]}`}
+  
 - Only the following functions are allowed to use inside `{}`:
 
   | Function    | Return      |
@@ -237,14 +244,14 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
        ]
      }
      ```
-   - html (get the first result in contents):
+   - html (example 1: get the **first result** in contents):
      ```html
      <img 
        width="400" 
        src="https://pximg.rainchan.win/img?img_id={$data.contents[0].illust_id}&web=true"
      >
      ```
-   - html (get a random result in contents):
+   - html (example 2: get a **random result** in contents):
      ```html
      <img 
        width="400" 
@@ -256,7 +263,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
 4. Pixv Illustraion API #2
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
-   - html:
+   - html (example 1: get the **first 9 results**):
    ```html
    <div class="row">
      <div class="col-4 mb-4 mb-lg-0">
@@ -273,6 +280,45 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
        <img src="https://pximg.rainchan.win/img?img_id={$data.contents[6].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        <img src="https://pximg.rainchan.win/img?img_id={$data.contents[7].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        <img src="https://pximg.rainchan.win/img?img_id={$data.contents[8].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+     </div>
+   </div>
+   ```
+   - html (example 2: declare **9 random integers** as **variables** for each and get random results):
+   ```html
+   {pixivUrl=https:/www.pixiv.net/artworks;pixivProxy=https:/pximg.rainchan.win/img;}
+   <div class="row">
+     <div class="col-4 mb-4 mb-lg-0">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+     </div>
+     <div class="col-4 mb-4 mb-lg-0">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+     </div>
+     <div class="col-4 mb-4 mb-lg-0">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
      </div>
    </div>
    ```
@@ -296,7 +342,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      ]
    }
    ```
-   - html:
+   - html (example 1: just get the **first** article):
    ```html
    <div class="d-flex">
      <a href="{$data.articles[0].url}" class="d-flex justify-content-center">
@@ -304,6 +350,29 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      </a>
      <div class="flex-grow-1 ms-3">
        <p class="h6">{$data.articles[0].title}</p>
+     </div>
+   </div>
+   ```
+   - html (example 2: declare a **random integer** as **variable** and get a random article):
+   ```html
+   <div class="d-flex">
+     <a href="{i=randomInt($data.articles.length);$data.articles[$vars.i].url}" class="d-flex justify-content-center">
+       <img src="{$data.articles[$vars.i].urlToImage}" class="rounded" height="100">
+     </a>
+     <div class="flex-grow-1 ms-3">
+       <p class="h6">{$data.articles[$vars.i].title}</p>
+     </div>
+   </div>
+   ```
+   - html (example 3: declare the variables at the top):
+   ```html
+   {i=randomInt($data.articles.length);}
+   <div class="d-flex">
+     <a href="{$data.articles[$vars.i].url}" class="d-flex justify-content-center">
+       <img src="{$data.articles[$vars.i].urlToImage}" class="rounded" height="100">
+     </a>
+     <div class="flex-grow-1 ms-3">
+       <p class="h6">{$data.articles[$vars.i].title}</p>
      </div>
    </div>
    ```

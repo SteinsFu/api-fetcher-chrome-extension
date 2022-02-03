@@ -30,18 +30,38 @@ $(function() {
     }
   }
 
-  function accessObj(obj, vstr) {
+  function accessObj(obj, str) {
     // vstr="temperature.data[0].place" -> value of obj.temperature.data[0].place
-    return vstr.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => o[i], obj)
+    return str.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => o[i], obj)
   }
 
-  function parseDollarData(data, vstr) {
-    vstr = vstr.replace(/\$data.(.+)/g, (m, g1) => accessObj(data, g1))	// access data obj
-    if (vstr == '$data') return data	// if only $data, return data
-    else return vstr
+  function prepObjPath(vars, data, str) {
+    return str.replace(/\[(.+?)\]/g, (m, g1) => {
+      return `[${parseDollarData(vars, data, g1)}]`
+    })
   }
 
-  function parseEval(data, str) {
+  function parseDollarData(vars, data, str) {
+    str = str.replace(/\$([a-zA-Z_]+?)\.(.+)/g, (m, g1, g2) => {  // access data/vars obj
+      g2 = prepObjPath(vars, data, g2)
+      if (g1 == 'data') return accessObj(data, g2)
+      else if (g1 == 'vars') return accessObj(vars, g2)
+      return m  // return orginal matched string if not above
+    })	
+    if (str == '$data') return data	// if only $data, return data
+    else return str
+  }
+
+  function parseVarsStr(data, strs) {
+    var vars = {}
+    strs.forEach(declare => {
+      const [name, value] = declare.split('=')
+      vars[name] = parseEval(vars, data, value)
+    })
+    return vars
+  }
+
+  function parseEval(vars, data, str) {
     if ((str.match(/\(/g) || []).length != (str.match(/\)/g) || []).length) {
       console.log(`${str}: Number of ( and ) does not match`)
       return
@@ -52,9 +72,9 @@ $(function() {
       const fn = matched.split(/[\(\),\s]/).filter(x => x)
       const fnName = fn[0]
       const fnParams = fn.slice(1)
-      // parse params if have access to $data
+      // parse params if have access to $data/$vars
       for (let i = 0; i < fnParams.length; i++) {
-        fnParams[i] = parseDollarData(data, fnParams[i])
+        fnParams[i] = parseDollarData(vars, data, fnParams[i])
         console.log(`\tparam[${i}]: ${fnParams[i]}`)
       }
       const result = FNS[fnName](...fnParams)
@@ -62,9 +82,9 @@ $(function() {
     })
     console.log(newStr)
     if (newStr.includes('(')) {
-      newStr = parseEval(data, newStr)
+      newStr = parseEval(vars, data, newStr)
     }
-    return parseDollarData(data, newStr)
+    return parseDollarData(vars, data, newStr)
   }
 
   function updateStorage(storageKey, obj, cb=()=>{}) {
@@ -127,9 +147,18 @@ $(function() {
       if (url && url.replaceAll(' ', '')) {
         fetchAPI(url, options)
         .then(res => {
+          var vars = {} // local vars for this card
           const newHtml = html.replace(/{(.+?)}/g, (m, g1) => {
-            return parseEval(res, g1)
+            var evalStr = g1
+            if (g1.includes(';')) {
+              const splited = g1.split(';')
+              const varsStrs = splited.slice(0, -1)
+              evalStr = splited[splited.length-1]
+              vars = Object.assign(vars, parseVarsStr(res, varsStrs))
+            }
+            return parseEval(vars, res, evalStr)
           })
+          console.log("final vars:", vars)
           cardBodyElem.empty().append(newHtml)
         })
       } else {  // url is empty
