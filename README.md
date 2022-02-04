@@ -284,7 +284,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```
    - html (example 2: declare **9 random integers** as **variables** for each and get random results):
    ```html
-   {pixivUrl=https:/www.pixiv.net/artworks;pixivProxy=https:/pximg.rainchan.win/img;}
+   {pixivUrl=https://www.pixiv.net/artworks;pixivProxy=https://pximg.rainchan.win/img;}
    <div class="row">
      <div class="col-4 mb-4 mb-lg-0">
        <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">

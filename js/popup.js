@@ -35,16 +35,16 @@ $(function() {
     return str.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => o[i], obj)
   }
 
-  function prepObjPath(vars, data, str) {
+  function preprocObjPath(vars, data, str) {
     return str.replace(/\[(.+?)\]/g, (m, g1) => {
       return `[${parseDollarData(vars, data, g1)}]`
     })
   }
 
   function parseDollarData(vars, data, str) {
-    str = str.replace(/\$([a-zA-Z_]+?)\.(.+)/g, (m, g1, g2) => {  // access data/vars obj
-      g2 = prepObjPath(vars, data, g2)
-      if (g1 == 'data') return accessObj(data, g2)
+    str = str.replace(/\$([a-zA-Z_][a-zA-Z_0-9]*?)\.(.+)/g, (m, g1, g2) => {
+      g2 = preprocObjPath(vars, data, g2)
+      if (g1 == 'data') return accessObj(data, g2)  // access data/vars obj
       else if (g1 == 'vars') return accessObj(vars, g2)
       return m  // return orginal matched string if not above
     })	
@@ -67,7 +67,7 @@ $(function() {
       return
     }
     // regex = /(\((?:\1??[^\(]*?\)))+/g        // (add, 1, 2)
-    regex = /([a-zA-Z_]+\((?:\1??[^\(]*?\)))+/g // add(1, 2)
+    regex = /([a-zA-Z_][a-zA-Z_0-9]*\((?:\1??[^\(]*?\)))+/g // add(1, 2)
     var newStr = str.replace(regex, (matched) => {
       const fn = matched.split(/[\(\),\s]/).filter(x => x)
       const fnName = fn[0]
