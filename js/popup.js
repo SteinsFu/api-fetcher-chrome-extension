@@ -88,18 +88,18 @@ $(function() {
   }
 
   function updateStorage(storageKey, obj, cb=()=>{}) {
-    chrome.storage.sync.get(storageKey, (data) => {
+    chrome.storage.local.get(storageKey, (data) => {
       data = data[storageKey]
       const newData = Object.assign(data || {}, obj)
-      chrome.storage.sync.set({[storageKey]: newData}, cb)
+      chrome.storage.local.set({[storageKey]: newData}, cb)
     })
   }
 
   function removeStorage(storageKey, key, cb=()=>{}) {
-    chrome.storage.sync.get(storageKey, (data) => {
+    chrome.storage.local.get(storageKey, (data) => {
       data = data[storageKey]
       delete data[key]
-      chrome.storage.sync.set({[storageKey]: data}, cb)
+      chrome.storage.local.set({[storageKey]: data}, cb)
     })
   }
 
@@ -198,19 +198,19 @@ $(function() {
     
     console.log(nextIds)
     if (nextIds) {
-      chrome.storage.sync.get('card_info', (data) => {
+      chrome.storage.local.get('card_info', (data) => {
         data = data['card_info']
         delete data[id]
         for (const nextId of nextIds)
           data[nextId].order -= 1
-        chrome.storage.sync.set({'card_info': data}, () => {})
+        chrome.storage.local.set({'card_info': data}, () => {})
       })
     }
     $(`#${id}`).remove()
   }
 
   function editCard(id) {
-    chrome.storage.sync.get('card_info', (data) => {
+    chrome.storage.local.get('card_info', (data) => {
       data = data['card_info'][id]
       $('#edit-card-id').val(id)
       $('#in-name').val(data.name)
@@ -240,12 +240,12 @@ $(function() {
     }
     if (dst.length == 1) {
       dstId = dst.attr('id')
-      chrome.storage.sync.get('card_info', (data) => {
+      chrome.storage.local.get('card_info', (data) => {
         data = data['card_info']
         const tmp = data[id].order
         data[id].order = data[dstId].order
         data[dstId].order = tmp
-        chrome.storage.sync.set({'card_info': data}, () => {})
+        chrome.storage.local.set({'card_info': data}, () => {})
       })
     }
   }
@@ -287,7 +287,7 @@ $(function() {
   }
 
   function exportCards() {
-    chrome.storage.sync.get('card_info', (data) => {
+    chrome.storage.local.get('card_info', (data) => {
       const str = JSON.stringify(data['card_info'], null, '  ')
       const vLink = document.createElement('a')
       const vBlob = new Blob([str], {type: "octet/stream"})
@@ -360,7 +360,7 @@ $(function() {
 
   function init() {
     $('#card-container').empty()
-    chrome.storage.sync.get('card_info', (data) => {
+    chrome.storage.local.get('card_info', (data) => {
       console.log("loading cards...")
       data = data['card_info']
       var arr = Object.entries(data)
@@ -372,7 +372,7 @@ $(function() {
         data[id].order = i
       }
       // make sure order are contiguous for all data
-      chrome.storage.sync.set({'card_info': data}, () => {})
+      chrome.storage.local.set({'card_info': data}, () => {})
     })
   }
   init()
