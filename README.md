@@ -287,35 +287,35 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    {pixivUrl=https://www.pixiv.net/artworks;pixivProxy=https://pximg.rainchan.win/img;}
    <div class="row">
      <div class="col-4 mb-4 mb-lg-0">
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
          <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
          <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
-         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       </a>
-     </div>
-     <div class="col-4 mb-4 mb-lg-0">
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
-         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       </a>
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
-         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
-       </a>
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
          <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
      </div>
      <div class="col-4 mb-4 mb-lg-0">
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
          <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
          <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+     </div>
+     <div class="col-4 mb-4 mb-lg-0">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
          <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
      </div>
@@ -344,7 +344,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    - html (example 1: just get the **first** article):
    ```html
    <div class="d-flex">
-     <a href="{$data.articles[0].url}" class="d-flex justify-content-center">
+     <a href="{$data.articles[0].url}" class="d-flex justify-content-center" target="_blank">
        <img src="{$data.articles[0].urlToImage}" class="rounded" height="100">
      </a>
      <div class="flex-grow-1 ms-3">
@@ -355,7 +355,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    - html (example 2: declare a **random integer** as **variable** and get a random article):
    ```html
    <div class="d-flex">
-     <a href="{i=randomInt($data.articles.length);$data.articles[$vars.i].url}" class="d-flex justify-content-center">
+     <a href="{i=randomInt($data.articles.length);$data.articles[$vars.i].url}" class="d-flex justify-content-center" target="_blank">
        <img src="{$data.articles[$vars.i].urlToImage}" class="rounded" height="100">
      </a>
      <div class="flex-grow-1 ms-3">
@@ -367,7 +367,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```html
    {i=randomInt($data.articles.length);}
    <div class="d-flex">
-     <a href="{$data.articles[$vars.i].url}" class="d-flex justify-content-center">
+     <a href="{$data.articles[$vars.i].url}" class="d-flex justify-content-center" target="_blank">
        <img src="{$data.articles[$vars.i].urlToImage}" class="rounded" height="100">
      </a>
      <div class="flex-grow-1 ms-3">
