@@ -375,6 +375,18 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      </div>
    </div>
    ```
+   - html (example 4: declare an object as a variable):
+   ```html
+   {i=randomInt($data.articles.length);article=$data.articles[$vars.i];}
+   <div class="d-flex">
+     <a href="{$vars.article.url}" class="d-flex justify-content-center" target="_blank">
+       <img src="{$vars.article.urlToImage}" class="rounded" height="100">
+     </a>
+     <div class="flex-grow-1 ms-3">
+       <p class="h6">{$vars.article.title}</p>
+     </div>
+   </div>
+   ```
    <div align="center"><img src="demo/images/news.png"></div>
    </br>
 

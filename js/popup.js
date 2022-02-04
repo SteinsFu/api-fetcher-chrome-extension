@@ -30,9 +30,24 @@ $(function() {
     }
   }
 
+  function isObj(x) {
+    return typeof x === 'object' && !Array.isArray(x) && x !== null
+  }
+
+  function isJsonStr(str) {
+    var x
+    try { x = JSON.parse(str) } 
+    catch (e) { return false }
+    if (typeof x === "object" && x !== null) return true
+    return false
+  }
+
   function accessObj(obj, str) {
     // vstr="temperature.data[0].place" -> value of obj.temperature.data[0].place
-    return str.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => o[i], obj)
+    return str.replace(/\[([0-9]+)\]/g, '.$1').split('.').reduce((o, i) => {
+      if (isJsonStr(o[i])) return JSON.parse(o[i])
+      else return o[i]
+    }, obj)
   }
 
   function preprocObjPath(vars, data, str) {
@@ -44,8 +59,16 @@ $(function() {
   function parseDollarData(vars, data, str) {
     str = str.replace(/\$([a-zA-Z_][a-zA-Z_0-9]*?)\.(.+)/g, (m, g1, g2) => {
       g2 = preprocObjPath(vars, data, g2)
-      if (g1 == 'data') return accessObj(data, g2)  // access data/vars obj
-      else if (g1 == 'vars') return accessObj(vars, g2)
+      if (g1 == 'data') {           // access data/vars obj
+        var x = accessObj(data, g2)
+        if (isObj(x)) x = JSON.stringify(x)
+        return x
+      }
+      else if (g1 == 'vars') {
+        var x = accessObj(vars, g2)
+        if (isObj(x)) x = JSON.stringify(x)
+        return x
+      }
       return m  // return orginal matched string if not above
     })	
     if (str == '$data') return data	// if only $data, return data
@@ -66,7 +89,7 @@ $(function() {
       console.log(`${str}: Number of ( and ) does not match`)
       return
     }
-    // regex = /(\((?:\1??[^\(]*?\)))+/g        // (add, 1, 2)
+    // regex = /(\((?:\1??[^\(]*?\)))+/g                    // (add, 1, 2)
     regex = /([a-zA-Z_][a-zA-Z_0-9]*\((?:\1??[^\(]*?\)))+/g // add(1, 2)
     var newStr = str.replace(regex, (matched) => {
       const fn = matched.split(/[\(\),\s]/).filter(x => x)
@@ -77,7 +100,8 @@ $(function() {
         fnParams[i] = parseDollarData(vars, data, fnParams[i])
         console.log(`\tparam[${i}]: ${fnParams[i]}`)
       }
-      const result = FNS[fnName](...fnParams)
+      var result = FNS[fnName](...fnParams)
+      if (isObj(result)) result = JSON.stringify(result)
       return result
     })
     console.log(newStr)
