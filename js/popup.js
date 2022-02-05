@@ -18,6 +18,7 @@ $(function() {
     "randomInt": (max) => Math.floor(Math.random() * parseInt(max)),
     "JSONstringify": (...args) => JSON.stringify(...args),
     "JSONparse": (...args) => JSON.parse(...args),
+    "timestampToLocale": (ts) => (new Date(Number(ts) * 1000)).toLocaleDateString(),
   }
 
   async function fetchAPI(url, options={}) {
@@ -33,12 +34,16 @@ $(function() {
   function isObj(x) {
     return typeof x === 'object' && !Array.isArray(x) && x !== null
   }
-
+  
+  function isArray(x) {
+    return Array.isArray(x) && x !== null
+  }
+  
   function isJsonStr(str) {
     var x
     try { x = JSON.parse(str) } 
     catch (e) { return false }
-    if (typeof x === "object" && x !== null) return true
+    if ((typeof x === "object" || Array.isArray(x)) && x !== null) return true
     return false
   }
 
@@ -61,12 +66,12 @@ $(function() {
       g2 = preprocObjPath(vars, data, g2)
       if (g1 == 'data') {           // access data/vars obj
         var x = accessObj(data, g2)
-        if (isObj(x)) x = JSON.stringify(x)
+        if (isObj(x) || isArray(x)) x = JSON.stringify(x)
         return x
       }
       else if (g1 == 'vars') {
         var x = accessObj(vars, g2)
-        if (isObj(x)) x = JSON.stringify(x)
+        if (isObj(x) || isArray(x)) x = JSON.stringify(x)
         return x
       }
       return m  // return orginal matched string if not above
@@ -75,8 +80,7 @@ $(function() {
     else return str
   }
 
-  function parseVarsStr(data, strs) {
-    var vars = {}
+  function parseVarsStr(vars, data, strs) {
     strs.forEach(declare => {
       const [name, value] = declare.split('=')
       vars[name] = parseEval(vars, data, value)
@@ -101,14 +105,51 @@ $(function() {
         console.log(`\tparam[${i}]: ${fnParams[i]}`)
       }
       var result = FNS[fnName](...fnParams)
-      if (isObj(result)) result = JSON.stringify(result)
+      if (isObj(result) || isArray(result)) 
+        result = JSON.stringify(result)
       return result
     })
-    console.log(newStr)
+    console.log("eval:", newStr)
     if (newStr.includes('(')) {
       newStr = parseEval(vars, data, newStr)
     }
     return parseDollarData(vars, data, newStr)
+  }
+
+  function parseLoop(data, str, forvars={}) {
+    // ([\S\n\t\v ]+): match group that contains anything including tabs and newline
+    var newHtml = str.replace(/<for (.+)>([\S\n\t\v\s]+)<\/for>/g, (m, g1, g2) => {
+      // 1. parse for loop args
+      var args = {"from": 0, "step": 1}
+      g1.split(' ').forEach(arg => {
+        let [name, value] = arg.split('=')
+        value = value.replace(/^"(.+)"$/, (m, g1) => g1)	// remove quotes
+  
+        if (name == "of") {
+          // parse $for in nested <for> tag, $vars=forvars in parseLoop() is storing $for variables
+          value = value.replace(/\$for/g, '$vars')	
+          const x = JSON.parse(parseEval(forvars, data, value))
+          args.items = isObj(x)? Object.entries(x) : x
+          args.to = args.items.length
+        }
+        else if (name == "from")
+          args.from = Number(parseEval(forvars, data, value))
+        else if (name == "to")
+          args.to = Number(parseEval(forvars, data, value))
+        else if (name == "step")
+          args.step = Number(parseEval(forvars, data, value))
+      })
+      // 2. for loop
+      var subHtml = ''
+      for (let i=args.from; i<args.to; i+=args.step) {
+        let nestedVars = {"i": i, "item": args.items? args.items[i] : null}
+        let curSubHtml = parseLoop(data, g2, nestedVars)
+        // 3. parse $for inside the html content
+        subHtml += curSubHtml.replace(/\$for\.([\w\.\[\]]+)/g, (m, g1) => accessObj(nestedVars, g1))
+      }
+      return subHtml
+    })
+    return newHtml
   }
 
   function updateStorage(storageKey, obj, cb=()=>{}) {
@@ -170,16 +211,21 @@ $(function() {
     function fn() {
       if (url && url.replaceAll(' ', '')) {
         fetchAPI(url, options)
-        .then(res => {
+        .then(res => {          
+          // 1. parse loop statements
+          var newHtml = parseLoop(res, html)
+          console.log("newHtml", newHtml)
           var vars = {} // local vars for this card
-          const newHtml = html.replace(/{(.+?)}/g, (m, g1) => {
+          newHtml = newHtml.replace(/{(.+?)}/g, (m, g1) => {
             var evalStr = g1
+            // 2. declare variables
             if (g1.includes(';')) {
-              const splited = g1.split(';')
+              const splited = g1.split(';').map(x => x.trim())
               const varsStrs = splited.slice(0, -1)
               evalStr = splited[splited.length-1]
-              vars = Object.assign(vars, parseVarsStr(res, varsStrs))
+              vars = Object.assign(vars, parseVarsStr(vars, res, varsStrs))
             }
+            // 3. evaluate statement
             return parseEval(vars, res, evalStr)
           })
           console.log("final vars:", vars)

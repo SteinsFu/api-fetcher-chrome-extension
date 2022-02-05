@@ -57,6 +57,7 @@
         <ul>
           <li><a href="#evaluation-limitations">Evaluation Limitations</a>
         </ul>
+        <li><a href="#looping">Looping</a>
         <li><a href="#examples">Examples</a>
       </ul>
     </li>
@@ -129,7 +130,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 ### Statement Evaluation
 - Use `{}` to evaluate the statement
 - Use `$data` to access the response data
-- Use `<var-name>=<value>;` to declare variable (card scoped) before your evalution statement
+- Use `<var-name>=<value>;` to declare variable (card scoped) before your evalution statement (**Remember to put `;` at the end of each variable declaration**)
 - Use `$vars.<var-name>` to access your variable
 - e.g.
   - response:
@@ -168,6 +169,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   | `randomInt(max)` | random integer in range [0, max) |
   | `JSONstringify(value, replacer, space)` | `JSON.stringify(value, replacer, space)` |
   | `JSONparse(text, reviver)` | `JSON.parse(text, reviver)` |
+  | `timestampToLocale(ts)` | convert unix timestamp to locale date string |
 
 - For Developers/Contributers: If you want to add more functions, please add them into `popup.js` `FNS` constant variable (please follow the [Contributing](#contributing) steps):
   ```javascript
@@ -184,6 +186,62 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
     <== add here...
   }
   ```
+
+### Looping
+- Use `<for></tag>` tag create a for loop
+  - `<for of="$data.contents">` where `$data.contents` is an array/object
+    - if it is an object, each item will be in `[key, value]` (`Array.prototype.entries()`)
+  - `<for to="10">`: loop from 0 to 10 (exclusive), step=1
+  - `<for from="-5" to="5" step="0.5">`: loop from -5 to 5 (exclusive), step=0.5
+- Use `$for.i` to access the current index
+- Use `$for.item` to access the current index (`null` if `of` param is not specified)
+- e.g.
+  - response:
+  ```json
+  {
+    "contents": [
+      {
+        "info": {
+          "title": "Hello World 1",
+          "desc": "description 1"
+        }
+      },
+      {
+        "info": {
+          "title": "Hello World 2",
+          "desc": "description 2"
+        }
+      }
+    ]
+  }
+  ```
+  - html (example 1: for...to)
+  ```html
+  <for to="$data.contents.length">
+    <h5>Content {$for.i}:</h5>
+    <p>title: {$data.contents[$for.i].info.title}</p>
+    <p>desc: {$data.contents[$for.i].info.desc}</p>
+  </for>
+  ```
+  - html (example 2: for...of)
+  ```html
+  <for of="$data.contents">
+    <h5>Content {$for.i}:</h5>
+    <p>title: {$for.item.info.title}</p>
+    <p>desc: {$for.item.info.desc}</p>
+  </for>
+  ```
+  - html (example 3: nested for)
+  ```html
+  <for of="$data.contents">
+    <h5>Content {$for.i}:</h5>
+    <for of="$for.item.info">
+      <p>{$for.item[0]}: {$for.item[1]}</p>
+    </for>
+  </for>
+  ```
+  <div align="center"><img src="demo/images/for_loop_example.png"></div>
+  </br>
 
 ### Examples
 1. Weather API
@@ -231,8 +289,26 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    <div align="center"><img src="demo/images/weather_with_icons.png"></div>
    </br>
 
+3. Weather API with for loop
+   - url: https://openweathermap.org/data/2.5/onecall?lat=39.76&lon=-98.5&units=metric&appid=439d4b804bc8187953eb36d2a8c26a02
+   - html:
+     ```html
+     <div class="row flex-row flex-nowrap" style="max-width: 400px;">
+       <for of="$data.daily">
+       <div class="col-3 px-1">
+         <div class="card card-body px-1 py-0">
+           <p class="text-center mb-1">{timestampToLocale($for.item.dt)}</p> 
+           <p class="mb-1"><i class="bi bi-thermometer-high"></i> {$for.item.temp.max}°C
+           <p class="mb-1"><i class="bi bi-thermometer-low"></i> {$for.item.temp.min}°C</p>
+         </div>
+       </div>
+       </for>
+     </div>
+     ```
+   <div align="center"><img src="demo/images/weather_forecast.png"></div>
+   </br>
 
-3. Pixiv Illustration API #1
+4. Pixiv Illustration API #1
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
    - response:
      ```json
@@ -260,7 +336,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    </br>
 
 
-4. Pixv Illustraion API #2
+5. Pixv Illustraion API #2
    - url: https://www.pixiv.net/ranking.php?format=json&content=illust
    - html (example 1: get the **first 9 results**):
    ```html
@@ -321,10 +397,42 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      </div>
    </div>
    ```
+   - html (example 3: use nested `<for>` (for loop) to display **9 random results**:
+   ```html
+   {pixivUrl=https://www.pixiv.net/artworks;pixivProxy=https://pximg.rainchan.win/img;}
+   <div class="row">
+     <for to="3">
+     <div class="col-4 mb-4 mb-lg-0">
+       <for to="3">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].   illust_id}" target="_blank">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true"    class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       </for>
+     </div>
+     </for>
+   </div>
+   ```
+   - html (example 4: use nested `<for>` (for loop) to display **first 9 results**:
+   ```html
+   {pixivUrl=https://www.pixiv.net/artworks;pixivProxy=https://pximg.rainchan.win/img;}
+   <div class="row">
+     <for to="3">
+     {outer_i=$for.i;}
+     <div class="col-4 mb-4 mb-lg-0">
+       <for to="3">
+       {inner_i=$for.i; idx=add(mul(3, $vars.outer_i), $vars.inner_i);}
+       <a href="{$vars.pixivUrl}/{$data.contents[$vars.idx].illust_id}" target="_blank">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.idx].illust_id}&web=true"    class="w-100 shadow-1-strong rounded mb-4">
+       </a>
+       </for>
+     </div>
+     </for>
+   </div>
+   ```
    <div align="center"><img src="demo/images/pixiv_gallery.png"></div>
    </br>
 
-5. News API
+6. News API
    - url: https://saurav.tech/NewsAPI/top-headlines/category/technology/us.json
    - response:
    ```json
@@ -390,7 +498,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    <div align="center"><img src="demo/images/news.png"></div>
    </br>
 
-6. Noembed.com Youtube Video
+7. Noembed.com Youtube Video
    - url: https://noembed.com/embed?url=https://www.youtube.com/watch?v=3wmqu4LzuoU
    - response:
    ```json
@@ -422,7 +530,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 - [x] Add Export & Import cards function
 - [x] Allow simple JS injection without using eval
 - [x] Allow declaring variables for each card
-- [ ] Allow looping templates in html
+- [x] Allow looping templates in html
 - [ ] Multiple APIs fetching in one card
 - [ ] Extend statement evalutaion function pools to all functions in `window` object
 - [ ] Allow injecting "Referer" to request headers
