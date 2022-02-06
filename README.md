@@ -1,4 +1,4 @@
-<div id="top"></div>
+f<div id="top"></div>
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -58,6 +58,9 @@
           <li><a href="#evaluation-limitations">Evaluation Limitations</a>
         </ul>
         <li><a href="#looping">Looping</a>
+        <ul>
+          <li><a href="#looping-limitations">Looping Limitations</a>
+        </ul>
         <li><a href="#examples">Examples</a>
       </ul>
     </li>
@@ -153,7 +156,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   - i.e. Use `{s=Hello World;}` instead of `{s="Hello World";}`}
 
 #### Evaluation Limitations
-- Cannot use javascript operators such as `+` `-` `*` `/` `%` `&&` `||` etc.
+- Do not support javascript operators such as `+` `-` `*` `/` `%` `&&` `||` etc.
 - Only the following functions can be used inside `{}` for now:
 
   | Function    | Return      |
@@ -242,6 +245,20 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   ```
   <div align="center"><img src="demo/images/for_loop_example.png"></div>
   </br>
+
+#### Looping Limitations
+- `<for>` will be parsed before parsing variables and evaluating statement
+- Do not support the following in `<for>` and s`$for`:
+  - `$vars.<variable-name>` in for loop arguments (i.e. `of`, `to`, `from`, `step`)
+    - ✔️ `<for of="$data.contents"> ... </for>`
+    - ✔️ `<for from="0" to="$data.contents.length" step="1"> ... </for>`
+    - ❌ `<for to="$vars.i"> ... </for>`
+  - only **integer** can be used in array indexing brackets 
+    - ✔️ `$for.items[0]`
+    - ❌ `$for.items[$var.i]`
+    - ❌ `$for.items[$for.i]`
+    - ❌ `$for.items[add(1, 2)]`
+    - ❌ `$for.items[$for.items[0].idx]`
 
 ### Examples
 1. Weather API

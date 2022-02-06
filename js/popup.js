@@ -145,7 +145,10 @@ $(function() {
         let nestedVars = {"i": i, "item": args.items? args.items[i] : null}
         let curSubHtml = parseLoop(data, g2, nestedVars)
         // 3. parse $for inside the html content
-        subHtml += curSubHtml.replace(/\$for\.([\w\.\[\]]+)/g, (m, g1) => accessObj(nestedVars, g1))
+        // [\w\.]+ : match any words and numbers and dots
+        // (\[[^\]]+\])* : match square brackets if any
+        // [\w\.]* : match any words and numbers and dots after square brackets if any
+        subHtml += curSubHtml.replace(/\$for\.([\w\.]+(\[[^\]]+\])*[\w\.]*)/g, (m, g1) => accessObj(nestedVars, g1))
       }
       return subHtml
     })
