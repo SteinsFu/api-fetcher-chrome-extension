@@ -421,8 +421,8 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
      <for to="3">
      <div class="col-4 mb-4 mb-lg-0">
        <for to="3">
-       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].   illust_id}" target="_blank">
-         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true"    class="w-100 shadow-1-strong rounded mb-4">
+       <a href="{$vars.pixivUrl}/{i=randomInt($data.contents.length);$data.contents[$vars.i].illust_id}" target="_blank">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.i].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
        </for>
      </div>
@@ -439,7 +439,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
        <for to="3">
        {inner_i=$for.i; idx=add(mul(3, $vars.outer_i), $vars.inner_i);}
        <a href="{$vars.pixivUrl}/{$data.contents[$vars.idx].illust_id}" target="_blank">
-         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.idx].illust_id}&web=true"    class="w-100 shadow-1-strong rounded mb-4">
+         <img src="{$vars.pixivProxy}?img_id={$data.contents[$vars.idx].illust_id}&web=true" class="w-100 shadow-1-strong rounded mb-4">
        </a>
        </for>
      </div>
