@@ -532,6 +532,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```
    <div align="center"><img src="demo/images/youtube.png"></div>
    </br>
+> Warning: using iframe can make the popup slow
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>

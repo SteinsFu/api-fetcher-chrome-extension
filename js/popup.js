@@ -102,14 +102,14 @@ $(function() {
       // parse params if have access to $data/$vars
       for (let i = 0; i < fnParams.length; i++) {
         fnParams[i] = parseDollarData(vars, data, fnParams[i])
-        console.log(`\tparam[${i}]: ${fnParams[i]}`)
+        // console.log(`\tparam[${i}]: ${fnParams[i]}`)
       }
       var result = FNS[fnName](...fnParams)
       if (isObj(result) || isArray(result)) 
         result = JSON.stringify(result)
       return result
     })
-    console.log("eval:", newStr)
+    // console.log("eval:", newStr)
     if (newStr.includes('(')) {
       newStr = parseEval(vars, data, newStr)
     }
@@ -217,7 +217,7 @@ $(function() {
         .then(res => {          
           // 1. parse loop statements
           var newHtml = parseLoop(res, html)
-          console.log("newHtml", newHtml)
+          // console.log("newHtml", newHtml)
           var vars = {} // local vars for this card
           newHtml = newHtml.replace(/{(.+?)}/g, (m, g1) => {
             var evalStr = g1
