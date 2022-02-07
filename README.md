@@ -248,7 +248,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
 
 #### Looping Limitations
 - `<for>` will be parsed before parsing variables and evaluating statement
-- Do not support the following in `<for>` and s`$for`:
+- Do not support the following in `<for>` and `$for`:
   - `$vars.<variable-name>` in for loop arguments (i.e. `of`, `to`, `from`, `step`)
     - ✔️ `<for of="$data.contents"> ... </for>`
     - ✔️ `<for from="0" to="$data.contents.length" step="1"> ... </for>`
@@ -532,7 +532,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
    ```
    <div align="center"><img src="demo/images/youtube.png"></div>
    </br>
-> Warning: using iframe can make the popup slow
+> Warning: using iframe might make the popup slow
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
