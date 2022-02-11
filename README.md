@@ -191,7 +191,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   ```
 
 ### Looping
-- Use `<for></tag>` tag create a for loop
+- Use `<for></for>` tag to create a for loop
   - `<for of="$data.contents">` where `$data.contents` is an array/object
     - if it is an object, each item will be in `[key, value]` (`Array.prototype.entries()`)
   - `<for to="10">`: loop from 0 to 10 (exclusive), step=1
