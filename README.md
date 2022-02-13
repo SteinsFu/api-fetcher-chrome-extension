@@ -19,6 +19,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+  <img src="demo/images/logo.png" width="150">
   <h3 align="center">API Fetcher Chrome Extension</h3>
 
   <p align="center">
