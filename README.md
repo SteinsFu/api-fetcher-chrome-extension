@@ -169,7 +169,7 @@ We are using Bootstrap 5 css and icons. you can insert html with Bootstrap 5 css
   | `mod(a, b)` | `a % b` |
   | `int(x)` | cast x to integer |
   | `and(a, b, c, ...)` | `a && b && c && ...` |
-  | `or(a, b, c, ...)` | `a || b || c || ...` |
+  | `or(a, b, c, ...)` | `a \|\| b \|\| c \|\| ...` |
   | `randomInt(max)` | random integer in range [0, max) |
   | `JSONstringify(value, replacer, space)` | `JSON.stringify(value, replacer, space)` |
   | `JSONparse(text, reviver)` | `JSON.parse(text, reviver)` |
