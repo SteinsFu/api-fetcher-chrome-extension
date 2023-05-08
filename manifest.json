@@ -1,0 +1,25 @@
+{
+  "name": "API Fetcher",
+  "description": "Fetch APIs in popup",
+  "version": "1.0",
+  "manifest_version": 3,
+  "icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "html/popup.html"
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  }
+}
